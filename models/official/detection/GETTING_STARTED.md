@@ -193,6 +193,18 @@ python ~/tpu/models/official/detection/export_tflite_model.py \
   --output_dir="${OUTPUT_DIR?}" \
 ```
 
+### Export to TensorRT
+
+Given the exported SavedModel, one can further convert it to the [TensoRT](https://developer.nvidia.com/tensorrt) format that can be deployed on GPU platform.
+
+```bash
+SAVED_MODEL_DIR="<path to the SavedModel directory>"
+OUTPUT_DIR="<path to the output TensorRT SavedModel directory>"
+python ~/tpu/models/official/detection/export_tensorrt_model.py \
+  --saved_model_dir="${SAVED_MODEL_DIR?}" \
+  --output_dir="${OUTPUT_DIR?}" \
+```
+
 ## Model Inference
 
 Given the checkpoint, one can easily run the model inference using the following command.

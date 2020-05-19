@@ -40,10 +40,10 @@ from tensorflow.python.ops import control_flow_util  # pylint: disable=g-direct-
 
 FLAGS = flags.FLAGS
 
-flags.DEFINE_string('export_dir', None, 'The export directory.')
-flags.DEFINE_string('checkpoint_path', None, 'Checkpoint path.')
 flags.DEFINE_string(
     'model', 'retinanet', 'Support `retinanet`, `mask_rcnn` and `shapemask`.')
+flags.DEFINE_string('export_dir', None, 'The export directory.')
+flags.DEFINE_string('checkpoint_path', None, 'Checkpoint path.')
 flags.DEFINE_boolean('use_tpu', False, 'Whether or not use TPU.')
 flags.DEFINE_string(
     'config_file', '',
@@ -95,6 +95,12 @@ def export(export_dir,
   # `train.num_shards`.
   params = params_dict.override_params_dict(
       params, params_override, is_strict=False)
+  if not FLAGS.use_tpu:
+    params.override({
+        'architecture': {
+            'use_bfloat16': FLAGS.use_tpu,
+        },
+    }, is_strict=True)
   params.validate()
   params.lock()
 
@@ -179,7 +185,7 @@ def main(argv):
 
 
 if __name__ == '__main__':
+  flags.mark_flag_as_required('model')
   flags.mark_flag_as_required('export_dir')
   flags.mark_flag_as_required('checkpoint_path')
-  flags.mark_flag_as_required('model')
   tf.app.run(main)

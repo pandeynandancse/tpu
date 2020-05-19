@@ -138,7 +138,7 @@ class BaseModel(six.with_metaclass(abc.ABCMeta, object)):
 
     self._use_bfloat16 = params.architecture.use_bfloat16
 
-    self._l2_weight_decay = params.train.l2_weight_decay
+    self._l2_weight_decay = float(params.train.l2_weight_decay)
 
     # Optimization.
     self._optimizer_fn = OptimizerFactory(params.train.optimizer)

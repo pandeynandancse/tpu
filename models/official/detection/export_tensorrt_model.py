@@ -41,7 +41,8 @@ flags.DEFINE_integer(
     'minimum_segment_size', 3,
     'minimum number of nodes required for a subgraph to be replaced by '
     'TRTEngineOp.')
-flags.DEFINE_bool('is_dynamic_op', False, 'whether to generate dynamic TRT ops')
+flags.DEFINE_boolean(
+    'is_dynamic_op', False, 'whether to generate dynamic TRT ops')
 flags.DEFINE_integer(
     'maximum_cached_engines', 1,
     'max number of cached TRT engines in dynamic TRT ops.')

@@ -95,10 +95,10 @@ def export(export_dir,
   # `train.num_shards`.
   params = params_dict.override_params_dict(
       params, params_override, is_strict=False)
-  if not FLAGS.use_tpu:
+  if not use_tpu:
     params.override({
         'architecture': {
-            'use_bfloat16': FLAGS.use_tpu,
+            'use_bfloat16': use_tpu,
         },
     }, is_strict=True)
   params.validate()
@@ -125,7 +125,7 @@ def export(export_dir,
         input_type=input_type,
         input_name=input_name)
   else:
-    raise ValueError('The model type `{} is not supported.'.format(FLAGS.model))
+    raise ValueError('The model type `{} is not supported.'.format(model))
 
   print(' - Setting up TPUEstimator...')
   estimator = tf.estimator.tpu.TPUEstimator(

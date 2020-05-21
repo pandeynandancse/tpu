@@ -36,7 +36,7 @@ class RpnHead(object):
                min_level,
                max_level,
                anchors_per_location,
-               num_convs=2,
+               num_convs=1,
                num_filters=256,
                use_separable_conv=False,
                activation='relu',
@@ -94,14 +94,15 @@ class RpnHead(object):
 
       def shared_rpn_heads(features, anchors_per_location, level):
         """Shared RPN heads."""
-        features = self._conv2d_op(
-            features,
-            self._num_filters,
-            kernel_size=(3, 3),
-            strides=(1, 1),
-            activation=(None if self._use_batch_norm else self._activation),
-            padding='same',
-            name='rpn')
+        for i in range(self._num_convs):
+          features = self._conv2d_op(
+              features,
+              self._num_filters,
+              kernel_size=(3, 3),
+              strides=(1, 1),
+              activation=(None if self._use_batch_norm else self._activation),
+              padding='same',
+              name='rpn' if self._num_convs == 1 else 'rpn_{}'.format(i))
 
         if self._use_batch_norm:
           # The batch normalization layers are not shared between levels.
